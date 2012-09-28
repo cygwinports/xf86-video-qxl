@@ -1,0 +1,12 @@
+--- origsrc/xf86-video-qxl-0.0.17/src/qxl.h	2012-03-14 11:49:59.000000000 -0500
++++ src/xf86-video-qxl-0.0.17/src/qxl.h	2012-07-01 02:52:14.329980500 -0500
+@@ -37,7 +37,9 @@
+ #endif
+ #include "xf86Cursor.h"
+ #include "xf86_OSproc.h"
++#ifdef XV
+ #include "xf86xv.h"
++#endif
+ #include "xf86Crtc.h"
+ #include "shadow.h"
+ #include "micmap.h"
