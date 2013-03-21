@@ -1,8 +1,8 @@
-inherit xorg
+inherit xorg git
 
 NAME="xf86-video-qxl"
 VERSION=0.1.0
-RELEASE=2
+RELEASE=3
 CATEGORY="X11"
 SUMMARY="Xorg Spice server driver"
 DESCRIPTION="Xspice is an X server and Spice server in one. It consists of a
@@ -11,9 +11,6 @@ variables, a module implementing three drivers: a video mostly code identical
 to the guest qxl X driver, and keyboard and mouse reading from the Spice inputs
 channel. Xspice allows regular X connections, while a spice client provides the
 keyboard and mouse and video output."
-
-PATCH_URI="01-xorg-libs.patch
-           02-no-xv.patch"
 
 DEPS_PATH="/usr/lib/xorg/modules"
 
