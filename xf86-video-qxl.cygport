@@ -2,7 +2,7 @@ inherit xorg git
 
 NAME="xf86-video-qxl"
 VERSION=0.1.0
-RELEASE=3
+RELEASE=4
 CATEGORY="X11"
 SUMMARY="Xorg Spice server driver"
 DESCRIPTION="Xspice is an X server and Spice server in one. It consists of a
