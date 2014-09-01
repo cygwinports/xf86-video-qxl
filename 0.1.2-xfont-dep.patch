@@ -1,0 +1,11 @@
+--- origsrc/xf86-video-qxl-0.1.2/configure.ac	2014-07-23 03:11:22.000000000 -0500
++++ src/xf86-video-qxl-0.1.2/configure.ac	2014-09-01 10:55:09.481130100 -0500
+@@ -61,7 +61,7 @@ XORG_DRIVER_CHECK_EXT(XV, videoproto)
+ XORG_DRIVER_CHECK_EXT(XFreeXDGA, xf86dgaproto)
+ 
+ # Obtain compiler/linker options for the driver dependencies
+-PKG_CHECK_MODULES(XORG, [xorg-server >= 1.0.99.901] xproto fontsproto $REQUIRED_MODULES)
++PKG_CHECK_MODULES(XORG, [xorg-server >= 1.0.99.901] xfont xproto fontsproto $REQUIRED_MODULES)
+ 
+ 
+ save_CFLAGS="$CFLAGS"

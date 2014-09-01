@@ -1,7 +1,7 @@
-inherit xorg git
+inherit xorg
 
 NAME="xf86-video-qxl"
-VERSION=0.1.1
+VERSION=0.1.2
 RELEASE=1
 CATEGORY="X11"
 SUMMARY="Xorg Spice server driver"
@@ -12,7 +12,10 @@ to the guest qxl X driver, and keyboard and mouse reading from the Spice inputs
 channel. Xspice allows regular X connections, while a spice client provides the
 keyboard and mouse and video output."
 
-PATCH_URI="0.1.1-cygwin.patch"
+PATCH_URI="
+	0.1.1-cygwin.patch
+	0.1.2-xfont-dep.patch
+"
 
 DEPS_PATH="/usr/lib/xorg/modules"
 
