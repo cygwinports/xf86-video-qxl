@@ -1,7 +1,7 @@
 inherit xorg
 
 NAME="xf86-video-qxl"
-VERSION=0.1.2
+VERSION=0.1.4
 RELEASE=1
 CATEGORY="X11"
 SUMMARY="Xorg Spice server driver"
@@ -13,13 +13,25 @@ channel. Xspice allows regular X connections, while a spice client provides the
 keyboard and mouse and video output."
 
 PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/xorg-x11-drv-qxl.git/plain/0001-worst-hack-of-all-time-to-qxl-driver.patch
+	http://pkgs.fedoraproject.org/cgit/xorg-x11-drv-qxl.git/plain/0006-Use-for-system-includes.patch
+	http://pkgs.fedoraproject.org/cgit/xorg-x11-drv-qxl.git/plain/0007-Fix-compilation-with-newer-Xorg-versions.patch
 	0.1.1-cygwin.patch
-	0.1.2-xfont-dep.patch
 "
 
 DEPS_PATH="/usr/lib/xorg/modules"
 
 CYGCONF_ARGS="--enable-xspice=only"
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	dodir /etc/X11
+	mv ${D}/usr/share/doc/${NAME}/spiceqxl.xorg.conf.example \
+	   ${D}/etc/X11/spiceqxl.xorg.conf
+	make_etc_defaults /etc/X11/spiceqxl.xorg.conf
+}
 
 DOCS="README.xspice"
 KEEP_LA_FILES="none"
