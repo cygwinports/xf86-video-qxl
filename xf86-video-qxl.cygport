@@ -2,7 +2,7 @@ inherit xorg
 
 NAME="xf86-video-qxl"
 VERSION=0.1.4
-RELEASE=1
+RELEASE=2
 CATEGORY="X11"
 SUMMARY="Xorg Spice server driver"
 DESCRIPTION="Xspice is an X server and Spice server in one. It consists of a
@@ -22,6 +22,7 @@ PATCH_URI="
 DEPS_PATH="/usr/lib/xorg/modules"
 
 CYGCONF_ARGS="--enable-xspice=only"
+MAKEOPTS+=" -lpixman-1"
 
 src_install() {
 	cd ${B}
