@@ -1,0 +1,90 @@
+--- origsrc/xf86-video-qxl/src/qxl.h	2016-12-14 17:46:10.000000000 -0600
++++ src/xf86-video-qxl/src/qxl.h	2016-12-14 17:57:58.620217400 -0600
+@@ -151,7 +151,9 @@ enum {
+     OPTION_SPICE_PLAYBACK_FIFO_DIR,
+     OPTION_SPICE_VDAGENT_ENABLED,
+     OPTION_SPICE_VDAGENT_VIRTIO_PATH,
++#ifdef __linux__
+     OPTION_SPICE_VDAGENT_UINPUT_PATH,
++#endif
+     OPTION_SPICE_VDAGENT_UID,
+     OPTION_SPICE_VDAGENT_GID,
+     OPTION_FRAME_BUFFER_SIZE,
+--- origsrc/xf86-video-qxl/src/qxl_driver.c	2016-12-14 17:46:10.000000000 -0600
++++ src/xf86-video-qxl/src/qxl_driver.c	2016-12-14 17:57:58.629218900 -0600
+@@ -70,8 +70,10 @@ static char filter_str[] = "filter";
+ static char auto_str[]   = "auto";
+ static char auto_glz_str[]   = "auto_glz";
+ static char spice_vdagent_virtio_path_default[] = "/tmp/xspice-virtio";
++#ifdef __linux__
+ static char spice_vdagent_uinput_path_default[] = "/tmp/xspice-uinput";
+ #endif
++#endif
+ static char driver_name[] = QXL_DRIVER_NAME;
+ const OptionInfoRec DefaultOptions[] =
+ {
+@@ -140,8 +142,10 @@ const OptionInfoRec DefaultOptions[] =
+       "SpiceVdagentEnabled",      OPTV_BOOLEAN,   {0}, FALSE},
+     { OPTION_SPICE_VDAGENT_VIRTIO_PATH,
+       "SpiceVdagentVirtioPath",   OPTV_STRING,    {.str = spice_vdagent_virtio_path_default}, FALSE},
++#ifdef __linux__
+     { OPTION_SPICE_VDAGENT_UINPUT_PATH,
+       "SpiceVdagentUinputPath",   OPTV_STRING,    {.str = spice_vdagent_uinput_path_default}, FALSE},
++#endif
+     { OPTION_SPICE_VDAGENT_UID,
+       "SpiceVdagentUid",          OPTV_INTEGER,    {0}, FALSE},
+     { OPTION_SPICE_VDAGENT_GID,
+--- origsrc/xf86-video-qxl/src/spiceqxl_uinput.c	2016-12-14 17:46:10.000000000 -0600
++++ src/xf86-video-qxl/src/spiceqxl_uinput.c	2016-12-14 17:57:58.633217800 -0600
+@@ -1,3 +1,5 @@
++#ifdef __linux__
++
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
+@@ -135,3 +137,5 @@ void spiceqxl_uinput_watch(qxl_screen_t
+         uinput_watch = qxl->core->watch_add(uinput_fd, SPICE_WATCH_EVENT_READ,
+                             spiceqxl_uinput_read_cb, qxl);
+ }
++
++#endif /* __linux__ */
+--- origsrc/xf86-video-qxl/src/spiceqxl_vdagent.c	2016-12-14 17:46:10.000000000 -0600
++++ src/xf86-video-qxl/src/spiceqxl_vdagent.c	2016-12-14 17:57:58.639726900 -0600
+@@ -11,7 +11,9 @@
+ #include "qxl_option_helpers.h"
+ 
+ #include "spiceqxl_util.h"
++#ifdef __linux__
+ #include "spiceqxl_uinput.h"
++#endif
+ #include "spiceqxl_vdagent.h"
+ 
+ static const char *vdagent_virtio_filename;
+@@ -62,7 +64,9 @@ static int vmc_read(SpiceCharDeviceInsta
+         vdagent_sin.qxl->core->watch_remove(virtio_client_watch);
+         virtio_client_watch = NULL;
+         spice_server_remove_interface(&vdagent_sin.base.base);
++#ifdef __linux__
+         spiceqxl_uinput_watch(vdagent_sin.qxl, FALSE);
++#endif
+     }
+     return nbytes;
+ }
+@@ -124,7 +128,9 @@ static void on_accept(int fd, int event,
+         /* TODO - SPICE_WATCH_EVENT_WRITE */, on_read_available, qxl);
+ 
+     spice_server_add_interface(qxl->spice_server, &vdagent_sin.base.base);
++#ifdef __linux__
+     spiceqxl_uinput_watch(qxl, TRUE);
++#endif
+ 
+     return;
+ 
+@@ -169,5 +175,7 @@ void spiceqxl_vdagent_init(qxl_screen_t
+         /* TODO - SPICE_WATCH_EVENT_WRITE */, on_accept, qxl);
+ 
+     vdagent_sin.base.base.sif = &vmc_interface.base;
++#ifdef __linux__
+     spiceqxl_uinput_init(qxl);
++#endif
+ }
