@@ -1,9 +1,8 @@
-GIT_REV=${PR#*git}39552a461516a6d917765000a9b60c295
-inherit xorg git
+inherit xorg
 
 NAME="xf86-video-qxl"
 VERSION=0.1.5
-RELEASE=0.1.20161212git4783c54
+RELEASE=1
 CATEGORY="X11"
 SUMMARY="Xorg Spice server driver"
 DESCRIPTION="Xspice is an X server and Spice server in one. It consists of a
@@ -15,7 +14,6 @@ keyboard and mouse and video output."
 
 PATCH_URI="
 	fedora/0001-worst-hack-of-all-time-to-qxl-driver.patch
-	fedora/0001-Adjust-xspice_wakeup_handler-prototype-for-building-.patch
 	0.1.5-cygwin.patch
 "
 
